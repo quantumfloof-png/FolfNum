@@ -107,7 +107,7 @@ def shorten(fn1: FolfNum) -> str:
     firstSuffixes = ['K', 'M', 'B']
     secondSuffixes = ['', 'U', 'D', 'T', 'Qd', 'Qn', 'Sx', 'Sp', 'Oc', 'No']
     thirdSuffixes = ['', 'De', 'Vg', 'Tg', 'Qg', 'Qng', 'Sg', 'Spg', 'Og', 'Ng']
-    fourthSuffixes = ['', 'Ce', 'Du', 'Tr', 'Qa', 'Qi', 'Se', 'Si', 'Ot', 'Ni']
+    fourthSuffixes = ['Ce', 'Du', 'Tr', 'Qa', 'Qi', 'Se', 'Si', 'Ot', 'Ni']
     fifthSuffixes = ['Mi', 'Mc', 'Na', 'Pi', 'Fm', 'At']
 
     # If the number's exponent is less than 3 or the suffix "K", return the float.
@@ -147,7 +147,7 @@ def shorten(fn1: FolfNum) -> str:
         # initiate the "hundreds_suffix" str as empty.
         hundreds_suffix = ""
         # iterate through fourth suffixes. (may need to change to stackingSuffixes.)
-        for i in range(len(fourthSuffixes)):
+        for i in range(len(stackingSuffixes)):
           if (hundreds >> i) & 1:
             hundreds_suffix += stackingSuffixes[i]
         suffix += hundreds_suffix
@@ -189,6 +189,107 @@ def add(fN1: FolfNum, fN2: FolfNum):
         exponent = finalExponent,
     ))
 
-# Test print statement.
-print(f'n3: {shorten(convertDataTypeToFolfNum('1e333'))}')
+# Subtract a number from another number. (a - b)
+def sub(fN1: FolfNum, fN2: FolfNum):
 
+    m1 = fN1.mantissa if fN1.sign == 0 else -fN1.mantissa
+    m2 = fN2.mantissa if fN2.sign == 0 else -fN2.mantissa
+
+    finalExponent = max(fN1.exponent, fN2.exponent)
+
+       # Check if number is bigger than the other one by a substantial amount; If it is, then practically do nothing.
+    if abs(fN1.exponent - fN2.exponent) > 15:
+        return normalizeFolfNum(FolfNum(fN1.sign, fN1.mantissa, fN1.exponent)) if fN1.exponent > fN2.exponent else normalizeFolfNum(FolfNum(fN2.sign, -fN2.mantissa if fN2.sign==0 else fN2.mantissa, fN2.exponent))
+
+    m1_aligned = m1 * (10 ** (fN1.exponent - finalExponent))
+    m2_aligned = m2 * (10 ** (fN2.exponent - finalExponent))
+
+    # Retrive and store the bigger exponent.
+    finalMantissa = m1_aligned - m2_aligned
+
+    if finalMantissa < 0:
+        finalSign = 1
+        finalMantissa = abs(finalMantissa)
+    else:
+        finalSign = 0
+
+    # return the normalized FolfNum to it's class for further modifications.
+    return normalizeFolfNum(FolfNum(
+        sign = finalSign,
+        mantissa = finalMantissa,
+        exponent = finalExponent,
+    ))
+
+
+# Multiply a number by another number.
+def mul(fN1: FolfNum, fN2: FolfNum):
+    # Quite simple.
+
+    # Multiply the mantissa to replicate the style of multiplying the numbers in mathematics.. and add the exponents.
+    newMantissa = fN1.mantissa * fN2.mantissa
+    newExponent = fN1.exponent + fN2.exponent
+
+    # Check whether negative or positive.. As multiplying anything but by it's own status of negative or positive in multiplication to check if it's negative or positive.
+    if fN1 != fN2:
+        sign = 1
+    else:
+        sign = 0
+
+    return normalizeFolfNum(FolfNum(
+        sign = sign,
+        mantissa = newMantissa,
+        exponent = newExponent,
+    ))
+
+# Divide a number by another number
+def div(fN1: FolfNum, fN2: FolfNum):
+    # The inverse of multiplication.
+
+    # Handle division by 0.
+    if fN2.mantissa == 0:
+        raise ValueError("Division by 0 error. Have fun being sucked up by a black hole.")
+
+    # Very simple shit; If you understand the previous parts of this module compentently.. this will be no where near hard to understand.
+
+    newMantissa = fN1.mantissa / fN2.mantissa
+    newExponent = fN1.exponent - fN2.exponent
+
+    if fN1 != fN2:
+        sign = 1
+    else:
+        sign = 0
+
+    return normalizeFolfNum(FolfNum(
+        sign = sign,
+        mantissa = newMantissa,
+        exponent = newExponent,
+    ))
+
+# Checks if a number is greater than another number.
+def gt(a: FolfNum, b: FolfNum) -> bool:
+    if a.sign != b.sign:
+        return a.sign == 0
+
+    if a.sign == 0:
+        if a.exponent != b.exponent:
+            return a.exponent > b.exponent
+        else:
+            return a.mantissa > b.mantissa
+        
+    else:
+        if a.exponent != b.exponent:
+            return a.exponent < b.exponent
+        else:
+            return a.mantissa < b.mantissa
+
+# Checks if a number is less than another number.
+def lt(a: FolfNum, b: FolfNum) -> bool:
+    gt(b, a)
+        
+
+# Test print statement.
+
+num1 = convertDataTypeToFolfNum('1e3')
+num2 = convertDataTypeToFolfNum('1e3') 
+
+print(f'n3: {gt(num1, num2)}')
