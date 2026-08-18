@@ -2,11 +2,17 @@
 
 # Import essential libraries. (I'm not sure If I need the decimal library anymore; I'll check.)
 import math
-from decimal import Decimal, DecimalTuple, getcontext
 
-# Found this online, I don't need it anymore.
-getcontext().Emax = 999999999999999999
-getcontext().Emin = -999999999999999999
+__all__ = [
+    "FolfNum",
+    "convertDataTypeToFolfNum",
+    "shorten",
+    "add", 
+    "subtract", 
+    "multiply", 
+    "divide",
+    "gt", "lt", "eq", "gte", "lte"
+]
 
 # Define the "FolfNum" class that is used for large numbers and split into sign, mantissa, exponent to signficantly preserve memory and bypass the 64-bit floating point integer limit.
 class FolfNum:
@@ -285,9 +291,6 @@ def gt(a: FolfNum, b: FolfNum) -> bool:
 # Checks if a number is less than another number.
 def lt(a: FolfNum, b: FolfNum) -> bool:
     gt(b, a)
-        
-
-# Test print statement.
 
 num1 = convertDataTypeToFolfNum('1e3')
 num2 = convertDataTypeToFolfNum('1e3') 
