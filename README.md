@@ -7,12 +7,12 @@ Incremental Games.. you are able to use this module to handle very large numbers
 
 # **LATENCY/SPEED CALCULATIONS (AVERAGE OF 500,000 ITERATIONS)**
 
-**add(a, b)** = ~3.359 µs
-**sub(a, b)** = ~2.818 µs
-**mul(a, b)** = ~2.926 µs
-**div(a, b)** = ~2.268 µs
-**gt(a, b)** = ~332 ns
-**lt(a, b)** = ~583 ns
+**add(a, b)** = ~3.359 µs    
+**sub(a, b)** = ~2.818 µs    
+**mul(a, b)** = ~2.926 µs    
+**div(a, b)** = ~2.268 µs    
+**gt(a, b)** = ~332 ns    
+**lt(a, b)** = ~583 ns    
 
 import FolfNum after it is in the root directory as "from FolfNum import *"
 
