@@ -17,3 +17,5 @@ Incremental Games.. you are able to use this module to handle very large numbers
 import FolfNum after it is in the root directory as "from FolfNum import *"
 
 This module is not entirely optimized for speed and/or performance yet as I just began learning python on 8/16/2024 at ~6:30PM and I am nowhere near exceptional/advanced yet. I just pick up things quickly. :3
+
+KNOWN BUGS: LT DOESN'T BEHAVE CORRECTLY, PERFORMANCE COULD BE SUSBTANTIALLY RESOLVED/OPTIMIZED, ADDING DOESN'T HANDLE NEGATIVE NUMBERS; will be fixed on **next** commit.
